@@ -1,10 +1,10 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: pidgin-gnome-keyring
-Upstream-Contact: Ali Ebrahim <ali.ebrahim314@gmail.com>
-Source: https://github.com/aebrahim/pidgin-gnome-keyring
+Upstream-Name: pidgin-kwallet
+Source: https://github.com/aebrahim/pidgin-kwallet
+Comment: Modifications: 2018 Marcus Soll changed project to pidgin-kwallet and removed some files
 
 Files: *
-Copyright: 2015 Ali Ebrahim <ali.ebrahim314@gmail.com>
+Copyright: 2015 Ali Ebrahim <ali.ebrahim314@gmail.com>; 2018 Marcus Soll
 License: GPL-2.0+
 
 Files: debian/*

@@ -1,27 +1,24 @@
-TARGET = gnome-keyring
-
-SECRETFLAGS = `pkg-config --libs --cflags libsecret-1`
+# Original version by Ali Ebrahim <ali.ebrahim314@gmail.com>
+# Modifications:
+#     2018 Marcus Soll: Changed file for kwallet usage
+VERSION = 0.0.1
 PURPLEFLAGS = `pkg-config --cflags purple`
-VERSION = $(shell cat VERSION)
-ifeq ($(strip $(VERSION)),)
-	VERSION = `git describe --tags`
-endif
 
-all: ${TARGET}.so
+all: kwallet-dbus-interface.a pidgin-kwallet.so
 
-clean: 
-	rm -f ${TARGET}.so ${TARGET}_*.tar.gz pidgin-${TARGET}_*.* *.pyc
-	rm -rf pidgin-${TARGET}-*
+clean:
+	rm -f pidgin-kwallet.so kwallet-dbus-interface.h kwallet-dbus-interface.a
 
-${TARGET}.so: ${TARGET}.c
+kwallet-dbus-interface.a:
+	go build -buildmode=c-archive kwallet-dbus-interface/kwallet-dbus-interface.go
 
-	${CC} ${CFLAGS} ${LDFLAGS} -Wall -I. -g -O2 ${TARGET}.c -o ${TARGET}.so -shared -fPIC -DPIC -ggdb ${PURPLEFLAGS} ${SECRETFLAGS} -DVERSION=\"${VERSION}\"
+pidgin-kwallet.so:
+	gcc -pthread -Wall -O2 -shared -fPIC -DPIC pidgin-kwallet.c kwallet-dbus-interface.a -o pidgin-kwallet.so ${PURPLEFLAGS} -DVERSION=\"${VERSION}\"
 
-install: ${TARGET}.so
+install: pidgin-kwallet.so
 	mkdir -p ${DESTDIR}/usr/lib/purple-2/
-	cp ${TARGET}.so ${DESTDIR}/usr/lib/purple-2/
+	cp pidgin-kwallet.so ${DESTDIR}/usr/lib/purple-2/
 
-install_local: ${TARGET}.so
+install_local: pidgin-kwallet.so
 	mkdir -p ~/.purple/plugins
-	cp ${TARGET}.so ~/.purple/plugins/
-
+	cp pidgin-kwallet.so ~/.purple/plugins/

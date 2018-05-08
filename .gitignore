@@ -1,1 +1,3 @@
-gnome-keyring.so
+kwallet-dbus-interface.a
+kwallet-dbus-interface.h
+pidgin-kwallet.so
