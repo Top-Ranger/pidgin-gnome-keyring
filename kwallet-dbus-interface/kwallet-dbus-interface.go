@@ -22,7 +22,7 @@ func getHandle(wallet string) (int64, error) {
 		return -1, err
 	}
 	handle := int64(-1)
-	err = conn.Object("org.kde.kwalletd", "/modules/kwalletd").Call("org.kde.KWallet.open", 0, wallet, int64(0), applicationName).Store(&handle)
+	err = conn.Object("org.kde.kwalletd5", "/modules/kwalletd5").Call("org.kde.KWallet.open", 0, wallet, int64(0), applicationName).Store(&handle)
 	if err != nil {
 		return int64(-1), err
 	}
@@ -38,7 +38,7 @@ func closeHandle(handle int64) error {
 		return err
 	}
 	var returnCode int
-	err = conn.Object("org.kde.kwalletd", "/modules/kwalletd").Call("org.kde.KWallet.close", 0, handle, applicationName).Store(&returnCode)
+	err = conn.Object("org.kde.kwalletd5", "/modules/kwalletd5").Call("org.kde.KWallet.close", 0, handle, applicationName).Store(&returnCode)
 	if err != nil {
 		return err
 	}
@@ -62,14 +62,14 @@ func CheckPidginDir(wallet *C.char) {
 	}
 	defer closeHandle(handle)
 	var folderExists bool
-	err = conn.Object("org.kde.kwalletd", "/modules/kwalletd").Call("org.kde.KWallet.hasFolder", 0, int(handle), folderName, applicationName).Store(&folderExists)
+	err = conn.Object("org.kde.kwalletd5", "/modules/kwalletd5").Call("org.kde.KWallet.hasFolder", 0, int(handle), folderName, applicationName).Store(&folderExists)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	if !folderExists {
 		var creationSuccessful bool
-		err = conn.Object("org.kde.kwalletd", "/modules/kwalletd").Call("org.kde.KWallet.createFolder", 0, int(handle), folderName, applicationName).Store(&creationSuccessful)
+		err = conn.Object("org.kde.kwalletd5", "/modules/kwalletd5").Call("org.kde.KWallet.createFolder", 0, int(handle), folderName, applicationName).Store(&creationSuccessful)
 		if err != nil {
 			log.Println(err)
 			return
@@ -95,7 +95,7 @@ func GetPassword(wallet, account, protocol *C.char) *C.char {
 	}
 	defer closeHandle(handle)
 	var password string
-	err = conn.Object("org.kde.kwalletd", "/modules/kwalletd").Call("org.kde.KWallet.readPassword", 0, int(handle), folderName, fmt.Sprint(C.GoString(account), ";", C.GoString(protocol)), applicationName).Store(&password)
+	err = conn.Object("org.kde.kwalletd5", "/modules/kwalletd5").Call("org.kde.KWallet.readPassword", 0, int(handle), folderName, fmt.Sprint(C.GoString(account), ";", C.GoString(protocol)), applicationName).Store(&password)
 	if err != nil {
 		log.Println(err)
 		return nil
@@ -118,7 +118,7 @@ func SetPassword(wallet, account, protocol, password *C.char) bool {
 	}
 	defer closeHandle(handle)
 	var returnCode int
-	err = conn.Object("org.kde.kwalletd", "/modules/kwalletd").Call("org.kde.KWallet.writePassword", 0, int(handle), folderName, fmt.Sprint(C.GoString(account), ";", C.GoString(protocol)), C.GoString(password), applicationName).Store(&returnCode)
+	err = conn.Object("org.kde.kwalletd5", "/modules/kwalletd5").Call("org.kde.KWallet.writePassword", 0, int(handle), folderName, fmt.Sprint(C.GoString(account), ";", C.GoString(protocol)), C.GoString(password), applicationName).Store(&returnCode)
 	if err != nil {
 		log.Println(err)
 		return false
