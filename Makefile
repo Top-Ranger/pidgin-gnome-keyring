@@ -1,7 +1,7 @@
 # Original version by Ali Ebrahim <ali.ebrahim314@gmail.com>
 # Modifications:
 #     2018 Marcus Soll: Changed file for kwallet usage
-VERSION = 0.0.1
+VERSION = 0.1.0
 PURPLEFLAGS = `pkg-config --cflags purple`
 
 all: kwallet-dbus-interface.a pidgin-kwallet.so
